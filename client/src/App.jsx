@@ -1,5 +1,5 @@
 function App() {
-  return <p className="text-2xl text-pink-600">In app components!</p>;
+  return <div className="text-center">Layout Describe!</div>;
 }
 
 export default App;
