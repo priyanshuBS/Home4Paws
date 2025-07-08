@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema(
         index: "2dsphere",
       },
     },
+    refreshToken: { type: String },
   },
   { timestamps: true }
 );
