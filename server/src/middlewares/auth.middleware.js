@@ -1,27 +1,31 @@
 import { User } from "../models/user.model";
+import { ApiError } from "../utils/ApiError";
 import { asyncHandler } from "../utils/asyncHandler";
-import { ErrorApiResponse } from "../utils/ErrorApiResponse";
 import jwt from "jsonwebtoken";
 
-export const authMiddleware = asyncHandler(async (req, res, next) => {
-  const token =
-    req.cookies?.accessToken || req.headers?.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json(new ErrorApiResponse("token not found"));
-  }
-
+export const verifyJWT = asyncHandler(async (req, _, next) => {
   try {
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
 
-    const user = await User.findById(decodedToken?._id).select("-password");
+    if (!token) {
+      throw new ApiError(401, "Unauthorized request");
+    }
+
+    const decodeToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    const user = await User.findById(decodeToken?._id).select(
+      "-password -refreshToken"
+    );
+
     if (!user) {
-      return res.status(401).json(new ErrorApiResponse("Invalid token"));
+      throw new ApiError(401, "Invalid access token");
     }
 
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json(new ErrorApiResponse("Invalid credentials"));
+    throw new ApiError(401, error?.message || "Invalid access token");
   }
 });
