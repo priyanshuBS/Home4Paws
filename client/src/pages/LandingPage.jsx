@@ -42,7 +42,7 @@ const LandingPage = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {["dog", "cat", "parrot"].map((type, index) => (
-            <FeaturePetsCard type={type} index={index} />
+            <FeaturePetsCard key={type} type={type} index={index} />
           ))}
         </div>
       </section>
