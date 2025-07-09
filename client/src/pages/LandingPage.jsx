@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { PawPrint } from "lucide-react";
+import FeaturePetsCard from "../components/FeaturePetsCard";
+import WhyAdoptCard from "../components/WhyAdoptCard";
 
 const LandingPage = () => {
   return (
@@ -40,29 +41,8 @@ const LandingPage = () => {
           Featured Pets
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {["dog", "cat", "rabbit"].map((type, index) => (
-            <div
-              key={type}
-              className={`bg-pink-50 p-6 rounded-2xl shadow hover:scale-105 transform transition duration-300 ease-in-out animate-[fadeInUp_${
-                0.5 + index * 0.3
-              }s_ease-in-out]`}
-              style={{
-                animation: `fadeInUp ${0.5 + index * 0.3}s ease-in-out`,
-              }}
-            >
-              <img
-                src={`https://source.unsplash.com/400x300/?${type}`}
-                alt={`${type}`}
-                className="rounded-xl mb-4 w-full h-52 object-cover"
-              />
-              <h3 className="text-xl font-bold mb-2 capitalize">{type}</h3>
-              <p className="text-gray-600 mb-4">
-                Meet our lovely {type}s ready to find a new home.
-              </p>
-              <button className="bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600 transition duration-300 cursor-pointer">
-                Adopt Now
-              </button>
-            </div>
+          {["dog", "cat", "parrot"].map((type, index) => (
+            <FeaturePetsCard type={type} index={index} />
           ))}
         </div>
       </section>
@@ -72,27 +52,18 @@ const LandingPage = () => {
           Why Adopt?
         </h2>
         <div className="grid md:grid-cols-3 gap-8 text-center">
-          <div className="p-6 rounded-xl bg-white shadow hover:scale-105 transform transition duration-300">
-            <PawPrint className="w-10 h-10 mx-auto text-yellow-500 mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Save a Life</h3>
-            <p className="text-gray-600">
-              Millions of animals need homes. Your adoption changes everything.
-            </p>
-          </div>
-          <div className="p-6 rounded-xl bg-white shadow hover:scale-105 transform transition duration-300">
-            <PawPrint className="w-10 h-10 mx-auto text-yellow-500 mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Health Checked</h3>
-            <p className="text-gray-600">
-              All pets are vaccinated and health-checked before adoption.
-            </p>
-          </div>
-          <div className="p-6 rounded-xl bg-white shadow hover:scale-105 transform transition duration-300">
-            <PawPrint className="w-10 h-10 mx-auto text-yellow-500 mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Lifetime Support</h3>
-            <p className="text-gray-600">
-              Get guidance from our team to help you with your new friend.
-            </p>
-          </div>
+          <WhyAdoptCard
+            title="Save a Life"
+            description="Millions of animals need homes. Your adoption changes everything."
+          />
+          <WhyAdoptCard
+            title="Health Checked"
+            description="All pets are vaccinated and health-checked before adoption."
+          />
+          <WhyAdoptCard
+            title="Lifetime Support"
+            description="Get guidance from our team to help you with your new friend."
+          />
         </div>
       </section>
     </>
