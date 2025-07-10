@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <header className="bg-gray-100 shadow-md font-sans h-16 w-full flex items-center justify-between md:px-16 px-4">
+    <header className="bg-white shadow-2xl font-sans h-16 w-full flex items-center justify-between md:px-16 px-4">
       <div className="flex items-center gap-2">
         <PawPrint className="w-8 h-8 text-pink-600" />
         <p className="text-2xl font-bold text-pink-600">Home4Paws</p>
@@ -26,7 +26,7 @@ const Header = () => {
         </Link>
         <Link
           to="/signup"
-          className="flex items-center gap-1 bg-gray-800 text-white px-4 py-2 rounded-xl font-semibold hover:bg-pink-600 transition-all duration-300 ease-in-out"
+          className="flex items-center gap-1 bg-gray-800 text-white px-4 py-2 rounded-3xl font-semibold hover:bg-pink-600 transition-all duration-300 ease-in-out"
         >
           <User className="w-5 h-5" />
           <span>Signup</span>
