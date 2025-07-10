@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Sidebar = ({ isOpen, setIsOpen }) => {
   return (
     <div
-      className={`fixed top-0 right-0 h-full w-64 bg-pink-200 shadow-2xl z-50 transform transition-all duration-300 ease-in-out ${
+      className={`fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-50 transform transition-all duration-300 ease-in-out ${
         isOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
