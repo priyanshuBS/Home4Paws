@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      required: [true, "PhoneNumber is required"],
       unique: true,
       minLength: 10,
       maxLength: 15,
