@@ -46,25 +46,25 @@ export const signpUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Validatin Error", parsed.error.format());
   }
 
-  const { email, phoneNumber, password } = parsed?.data;
+  const { name, email, password, role } = parsed?.data;
 
-  const existingUser = await User.findOne({
-    $or: [{ email }, { phoneNumber }],
-  });
+  const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new ApiError(409, "user with given credentials alredy exist.");
   }
 
   const newUser = await User.create({
+    name,
     email,
-    phoneNumber,
     password,
+    role,
   });
 
   const userPayload = {
     _id: newUser?._id,
+    name: newUser?.name,
     email: newUser?.email,
-    phoneNumber: newUser?.phoneNumber,
+    role: newUser?.role,
   };
 
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
@@ -91,9 +91,9 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "invlid credentials", parsed?.error?.format());
   }
 
-  const { email, password } = parsed?.data;
+  const { email, password, role } = parsed?.data;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ $and: [{ email }, { role }] });
 
   if (!user) {
     throw new ApiError(404, "user doesn't exist");
