@@ -5,7 +5,11 @@ import { User } from "../models/user.model.js";
 import {
   loginUserSchema,
   signupUserSchema,
+  updateUserProfileSchema,
 } from "../validations/user.validation.js";
+import cloudinary from "../utils/cloudinary.js";
+import fs from "fs/promises";
+import { date } from "zod/v4";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -149,4 +153,65 @@ export const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "user logged out successfully!"));
+});
+
+export const updateUserDetails = asyncHandler(async (req, res) => {
+  const parsedData = updateUserProfileSchema.safeParse(req.body);
+
+  if (!parsedData.success) {
+    throw new ApiError(400, "Invalid data provided.");
+  }
+
+  const updatedData = parsedData?.data;
+
+  const user = await User.findById(req.user?._id);
+
+  if (!user) {
+    throw new ApiError(404, "User not found!");
+  }
+
+  if (req.file) {
+    if (user.avatarPubllicId) {
+      await cloudinary.uploader.destroy(user.avatarPubllicId);
+    }
+    const uploadResult = await cloudinary.uploader.upload(req.file?.path, {
+      folder: "profiles",
+      transformation: [
+        {
+          width: 300,
+          height: 300,
+          crop: "thumb",
+          gravity: "face",
+          radius: "max",
+        },
+      ],
+    });
+
+    await fs.unlink(req.file?.path);
+
+    user.avatar = uploadResult?.secure_url;
+    user.avatarPubllicId = uploadResult?.public_id;
+  }
+
+  ["name", "phoneNumber", "location"].forEach((field) => {
+    if (updatedData[field] !== undefined) {
+      user[field] = updatedData[field];
+    }
+  });
+  await user.save();
+
+  const updatedPayload = {
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    phoneNumber: user.phoneNumber,
+    avatar: user.avatar,
+    location: user.location,
+  };
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedPayload, "User data updated successfully!")
+    );
 });
