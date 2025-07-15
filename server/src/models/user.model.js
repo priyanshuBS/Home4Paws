@@ -38,6 +38,7 @@ const userSchema = new mongoose.Schema(
       default: "customer",
     },
     avatar: String,
+    avatarPubllicId: String,
     location: {
       address: { type: String },
       city: { type: String },
