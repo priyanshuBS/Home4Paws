@@ -9,7 +9,6 @@ import {
 } from "../validations/user.validation.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs/promises";
-import { date } from "zod/v4";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
