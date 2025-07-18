@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { email } from "zod/v4";
 
 export const signupUserSchema = z.object({
   name: z.string().trim().min(3).max(50),
