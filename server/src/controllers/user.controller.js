@@ -9,6 +9,7 @@ import {
 } from "../validations/user.validation.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs/promises";
+import { read } from "fs";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -213,4 +214,16 @@ export const updateUserDetails = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(200, updatedPayload, "User data updated successfully!")
     );
+});
+
+export const aboutMe = asyncHandler(async (req, res) => {
+  const user = await User.findById(req?.user?._id).select(
+    "-password -refreshToken"
+  );
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return res.status(200).json(new ApiResponse(200, user, "User info."));
 });
