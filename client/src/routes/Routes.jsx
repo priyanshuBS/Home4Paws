@@ -3,6 +3,7 @@ import RootLayout from "../pages/RootLayout";
 import LandingPage from "../pages/LandingPage";
 import HomePage from "../pages/HomePage";
 import Signup from "../pages/Signup";
+import Login from "../pages/Login";
 
 const appRouter = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const appRouter = createBrowserRouter([
       {
         path: "signup",
         element: <Signup />,
+      },
+      {
+        path: "login",
+        element: <Login />,
       },
     ],
   },
