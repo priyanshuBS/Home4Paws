@@ -8,8 +8,8 @@ const Footer = () => {
         {/* about website */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <PawPrint className="w-6 h-6 text-white md:w-4 md:h-4" />
-            <h2 className="text-2xl font-semibold text-white md:text-[1.1rem]">
+            <PawPrint className="w-6 h-6 text-white" />
+            <h2 className="text-2xl font-semibold text-white md:text-[1.4rem]">
               Home4Paws
             </h2>
           </div>

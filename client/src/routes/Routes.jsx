@@ -2,8 +2,9 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import RootLayout from "../pages/RootLayout";
 import LandingPage from "../pages/LandingPage";
 import HomePage from "../pages/HomePage";
+import Signup from "../pages/Signup";
 
-const router = createBrowserRouter([
+const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
@@ -20,8 +21,12 @@ const router = createBrowserRouter([
         path: "home",
         element: <HomePage />,
       },
+      {
+        path: "signup",
+        element: <Signup />,
+      },
     ],
   },
 ]);
 
-export default router;
+export default appRouter;
