@@ -23,7 +23,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div className="flex items-center justify-center min-h-[calc(100vh-16)] bg-gray-100 px-4 py-14">
       <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 h-10/12 p-5 bg-white rounded-2xl shadow-xl">
         <h2 className="text-2xl font-bold mb-3 text-center text-gray-800">
           Create your account
@@ -52,7 +52,7 @@ const Signup = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-2 focus:border-pink-400 transition-all duration-150 ease-in"
               placeholder="you@example.com"
               required
             />
@@ -66,7 +66,7 @@ const Signup = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-2 focus:border-pink-400 transition-all duration-150 ease-in"
               placeholder="********"
               required
             />
@@ -79,7 +79,7 @@ const Signup = () => {
               name="role"
               value={formData.role}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-2 focus:border-pink-400 transition-all duration-150 ease-in"
               required
             >
               <option value="">Select role</option>
