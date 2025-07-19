@@ -9,7 +9,11 @@ const Header = () => {
     <header className="bg-white shadow-2xl font-sans h-16 w-full flex items-center justify-between md:px-16 px-4">
       <div className="flex items-center gap-2">
         <PawPrint className="w-8 h-8 text-pink-600" />
-        <p className="text-2xl font-bold text-pink-600">Home4Paws</p>
+        <Link to="landing-page">
+          <p className="text-2xl font-bold text-pink-600 cursor-pointer">
+            Home4Paws
+          </p>
+        </Link>
       </div>
       <div className="md:flex items-center gap-10 hidden">
         <Link
