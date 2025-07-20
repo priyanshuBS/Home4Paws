@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { login, authLoading } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,10 +19,13 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login submitted:", formData);
-    // Call API here
+    const result = await login(formData);
+    if (result.success) {
+      navigate("/home");
+    }
   };
 
   return (
@@ -76,9 +83,14 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full py-2.5 mt-2 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-lg shadow-md transition duration-300"
+            disabled={authLoading}
+            className={`w-full py-2.5 mt-2 flex justify-center items-center ${
+              authLoading
+                ? "bg-pink-300 cursor-not-allowed"
+                : "bg-pink-500 hover:bg-pink-600 cursor-pointer"
+            } text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in`}
           >
-            Log In
+            Login
           </button>
         </form>
         <p className="mt-3 text-center text-gray-600 text-sm">
