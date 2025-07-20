@@ -18,6 +18,6 @@ router
   .route("/update-profile")
   .post(verifyJWT, upload.single("avatar"), updateUserDetails);
 
-router.route("about-me").get(verifyJWT, aboutMe);
+router.route("/about-me").get(verifyJWT, aboutMe);
 
 export default router;
