@@ -12,7 +12,8 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const res = await api.get("/users/about-me");
-      setUser(res.data);
+      setUser(res?.data?.data);
+      console.log("User: ", user);
     } catch (error) {
       setUser(null);
     } finally {
@@ -29,10 +30,10 @@ export const AuthProvider = ({ children }) => {
       toast.success("Signup successfully!");
       return { success: true };
     } catch (err) {
-      const message = err?.response?.err?.message || "Signup Failed";
-      setAuthError(message);
-      toast.error(message);
-      return { success: false, error: message };
+      console.log(err.message);
+      setAuthError(err?.message);
+      toast.error("Signup Failed");
+      return { success: false, error: err?.message };
     } finally {
       setAuthLoading(false);
     }
@@ -47,10 +48,9 @@ export const AuthProvider = ({ children }) => {
       toast.success("Login successfully!");
       return { success: true };
     } catch (err) {
-      const message = err?.message || "Login failed";
-      setAuthError(message);
-      toast.error(message);
-      return { success: false, error: message };
+      setAuthError(err?.message);
+      toast.error("Login failed");
+      return { success: false, error: err?.message };
     } finally {
       setAuthLoading(false);
     }
@@ -61,13 +61,17 @@ export const AuthProvider = ({ children }) => {
       await api.post("users/logout");
       setUser(null);
       toast.success("Logout successfully!");
+      return { success: true };
     } catch (error) {
       toast.error("Logout failed");
     }
   };
 
   useEffect(() => {
-    fetchUser();
+    const init = async () => {
+      await fetchUser();
+    };
+    init();
   }, []);
 
   return (
