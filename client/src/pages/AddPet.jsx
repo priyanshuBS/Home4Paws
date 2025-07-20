@@ -66,7 +66,11 @@ const AddPet = () => {
     }
 
     try {
-      await api.post("/pets", data, {
+      for (let pair of data.entries()) {
+        console.log(pair[0] + ": ", pair[1]);
+      }
+
+      await api.post("/pets/add-pet", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Pet added successfully!");

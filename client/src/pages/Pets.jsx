@@ -7,20 +7,20 @@ const Pets = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        const res = await api.get("/pets");
-        setPets(res?.data?.data || []); // assuming { data: { data: [pets] } }
-      } catch (error) {
-        console.error("Failed to fetch pets:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchPets = async () => {
+  //     try {
+  //       const res = await api.get("/pets");
+  //       setPets(res?.data?.data || []); // assuming { data: { data: [pets] } }
+  //     } catch (error) {
+  //       console.error("Failed to fetch pets:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchPets();
-  }, []);
+  //   fetchPets();
+  // }, []);
 
   return (
     <div className="px-6 py-10">
