@@ -1,7 +1,18 @@
 import { X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    const result = await logout();
+    if (result?.success) {
+      navigate("/landing-page");
+    }
+  };
   return (
     <div
       className={`fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-50 transform transition-all duration-300 ease-in-out ${
@@ -36,6 +47,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           className="font-semibold px-4 py-3 rounded-lg text-gray-700 hover:bg-pink-100 hover:ring-2 hover:ring-pink-300 hover:scale-105 transition-all duration-300 ease-in-out"
         >
           Create Account
+        </Link>
+        <Link
+          onClick={handleLogout}
+          className="font-semibold px-4 py-3 rounded-lg text-gray-700 hover:bg-pink-100 hover:ring-2 hover:ring-pink-300 hover:scale-105 transition-all duration-300 ease-in-out"
+        >
+          Logout
         </Link>
       </nav>
     </div>
