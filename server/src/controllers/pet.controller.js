@@ -14,12 +14,11 @@ export const addPet = asyncHandler(async (req, res) => {
 
   const petData = parsedData?.data;
 
-  if (req?.user?._id.toString() !== petData?.owner.toString()) {
-    throw new ApiError(403, "Unauthorized: Invalid owner reference");
-  }
+  const ownerId = req?.user?._id;
+  petData.owner = ownerId;
 
   let imagesUrl = [];
-  if (req.files && req.files.length > 0) {
+  if (req?.files && req?.files?.length > 0) {
     try {
       for (const file of req.files) {
         const result = await uploadToCloudinary(file?.path, "pets");
@@ -32,7 +31,7 @@ export const addPet = asyncHandler(async (req, res) => {
     }
   }
 
-  const newPet = await Pet.create({ petData, imagesUrl });
+  const newPet = await Pet.create({ ...petData, images: imagesUrl });
 
   return res
     .status(201)
