@@ -37,3 +37,16 @@ export const addPet = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, newPet, "New pet created successfully!"));
 });
+
+export const getAllPets = asyncHandler(async (req, res) => {
+  const allPets = await Pet.find();
+  console.log(allPets);
+
+  if (!allPets) {
+    throw new ApiError(404, "No pets found.");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, allPets, "Fetch pets data successfully!"));
+});
