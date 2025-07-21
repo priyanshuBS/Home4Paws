@@ -16,8 +16,10 @@ app.use(cookieParser());
 
 // import routes
 import userRouter from "./routes/user.route.js";
+import petRouter from "./routes/pet.route.js";
 
 // routes declaration
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/pets", petRouter);
 
 export default app;
