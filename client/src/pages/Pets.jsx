@@ -1,71 +1,77 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api/api"; // Adjust based on your actual path
+import { api } from "../api/api";
+import PetCard from "../components/PetCard";
+import PetCardSkeleton from "../components/PetCardSkeleton";
+import { Plus } from "lucide-react";
+import { useAuth } from "../auth/AuthProvider"; // ✅ Import useAuth hook
 
 const Pets = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { user } = useAuth(); // ✅ Access user from context
 
-  // useEffect(() => {
-  //   const fetchPets = async () => {
-  //     try {
-  //       const res = await api.get("/pets");
-  //       setPets(res?.data?.data || []); // assuming { data: { data: [pets] } }
-  //     } catch (error) {
-  //       console.error("Failed to fetch pets:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        const res = await api.get("/pets/petsData");
+        setPets(res?.data?.data || []);
+      } catch (error) {
+        console.error("Failed to fetch pets:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchPets();
-  // }, []);
+    fetchPets();
+  }, []);
 
   return (
-    <div className="px-6 py-10">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-gray-800">Adoptable Pets</h2>
-        <button
-          onClick={() => navigate("/add-pet")}
-          className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-xl font-medium shadow-md transition duration-200 ease-in-out cursor-pointer"
-        >
-          + Add Pet
-        </button>
+    <section className="px-6 sm:px-10 md:px-16 py-10 bg-gray-50 min-h-screen">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+        <div>
+          <h2 className="text-4xl font-extrabold text-gray-800">Adopt a Pet</h2>
+          <p className="text-gray-600 mt-1">
+            Browse all lovable pets looking for a home ❤️
+          </p>
+        </div>
+
+        {/* ✅ Conditionally render "Add Pet" button */}
+        {user?.role === "owner" && (
+          <button
+            onClick={() => navigate("/add-pet")}
+            className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-xl font-medium shadow-md transition duration-200 ease-in-out"
+          >
+            <Plus className="w-5 h-5" />
+            Add Pet
+          </button>
+        )}
       </div>
 
+      {/* Content */}
       {loading ? (
-        <p className="text-gray-600 text-center">Loading pets...</p>
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <PetCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : pets.length > 0 ? (
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {pets.map((pet) => (
+            <PetCard key={pet._id} pet={pet} />
+          ))}
+        </div>
       ) : (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {pets.length > 0 ? (
-            pets.map((pet) => (
-              <div
-                key={pet._id}
-                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
-              >
-                <img
-                  src={pet.image}
-                  alt={pet.name}
-                  className="h-48 w-full object-cover"
-                />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    {pet.name}
-                  </h3>
-                  <p className="text-sm text-gray-600">Breed: {pet.breed}</p>
-                  <p className="text-sm text-gray-600">Age: {pet.age}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-600 col-span-full text-center">
-              No pets available.
-            </p>
-          )}
+        <div className="text-center text-gray-500 py-24">
+          <p className="text-xl font-medium">
+            No pets available for adoption at the moment.
+          </p>
+          <p className="text-sm mt-2">Click "Add Pet" to list a new one.</p>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
