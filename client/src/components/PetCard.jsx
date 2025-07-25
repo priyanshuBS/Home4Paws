@@ -34,54 +34,53 @@ const PetCard = ({ pet }) => {
   };
 
   return (
-    <div className="relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-100 transform hover:-translate-y-0.5 hover:scale-[1.01]">
-      {/* Heart Icon */}
+    <div className="bg-white rounded-2xl relative shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300 overflow-hidden max-w-sm">
+      {/* Like Button */}
       <button
         onClick={() => setLiked((prev) => !prev)}
-        className="absolute top-3 right-3 z-20 bg-white rounded-full p-1 shadow-sm hover:scale-105 transition cursor-pointer"
+        className="absolute top-3 right-3 z-10 bg-white rounded-full p-1 shadow hover:scale-105 transition"
       >
         <Heart
-          className={`w-5 h-5 transition-colors duration-200 ${
+          className={`w-5 h-5 ${
             liked ? "fill-red-500 text-red-500" : "text-gray-400"
           }`}
         />
       </button>
 
-      {/* Image Section with Arrows Only */}
-      <div className="relative group">
+      {/* Image Carousel */}
+      <div className="relative group w-full h-56">
         <img
           src={images[currentImageIndex] || "/placeholder-pet.jpg"}
           alt={name}
-          className="w-full h-56 object-cover transition duration-300"
+          className="w-full h-full object-cover"
         />
-
         {images.length > 1 && (
           <>
             <button
               onClick={handlePrev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 hidden group-hover:inline-block transition cursor-pointer"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 p-1 rounded-full shadow hidden group-hover:block"
             >
-              <ChevronLeft className="w-6 h-6 text-white drop-shadow-sm" />
+              <ChevronLeft className="w-5 h-5 text-gray-700" />
             </button>
             <button
               onClick={handleNext}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 hidden group-hover:inline-block transition cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 p-1 rounded-full shadow hidden group-hover:block"
             >
-              <ChevronRight className="w-6 h-6 text-white drop-shadow-sm" />
+              <ChevronRight className="w-5 h-5 text-gray-700" />
             </button>
           </>
         )}
       </div>
 
-      {/* Pet Info */}
-      <div className="p-4 space-y-2">
+      {/* Simplified Pet Info */}
+      <div className="p-4 space-y-1">
         <div className="flex justify-between items-center">
-          <h3 className="text-xl font-semibold text-gray-800">{name}</h3>
-          <span className="text-sm capitalize text-gray-500">{gender}</span>
+          <h3 className="text-lg font-medium text-gray-800">{name}</h3>
+          <span className="text-sm text-gray-500 capitalize">{gender}</span>
         </div>
 
         <p className="text-sm text-gray-600">
-          Breed: {breed || "Unknown"} • Age: {age} yr{age > 1 ? "s" : ""}
+          {breed || "Unknown"} • {age} yr{age > 1 ? "s" : ""}
         </p>
 
         <div className="flex items-center text-sm text-gray-500">
@@ -89,19 +88,19 @@ const PetCard = ({ pet }) => {
           <span>{location}</span>
         </div>
 
-        <div className="flex gap-2 flex-wrap text-xs">
+        <div className="flex gap-2 mt-2 flex-wrap text-xs">
           {vaccinated && (
-            <span className="bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+            <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
               Vaccinated
             </span>
           )}
           {neutered && (
-            <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
               Neutered
             </span>
           )}
           {adopted && (
-            <span className="bg-red-100 text-red-800 px-2 py-0.5 rounded-full">
+            <span className="bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
               Adopted
             </span>
           )}
@@ -109,10 +108,12 @@ const PetCard = ({ pet }) => {
 
         <Link
           to={`/pets/${_id}`}
-          className="inline-flex items-center mt-3 gap-1 bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition"
+          className="inline-block mt-3 w-full text-center bg-blue-600 text-white py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition"
         >
-          <PawPrint className="w-4 h-4" />
-          View Details
+          <div className="flex items-center justify-center gap-1">
+            <PawPrint className="w-4 h-4" />
+            View Details
+          </div>
         </Link>
       </div>
     </div>
