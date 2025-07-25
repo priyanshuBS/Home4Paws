@@ -5,6 +5,7 @@ import {
   logoutUser,
   updateUserDetails,
   aboutMe,
+  refresh,
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/multer.middleware.js";
@@ -19,5 +20,6 @@ router
   .post(verifyJWT, upload.single("avatar"), updateUserDetails);
 
 router.route("/about-me").get(verifyJWT, aboutMe);
+router.route("/refresh").post(refresh);
 
 export default router;

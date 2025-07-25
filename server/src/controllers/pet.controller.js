@@ -40,7 +40,6 @@ export const addPet = asyncHandler(async (req, res) => {
 
 export const getAllPets = asyncHandler(async (req, res) => {
   const allPets = await Pet.find();
-  console.log(allPets);
 
   if (!allPets) {
     throw new ApiError(404, "No pets found.");

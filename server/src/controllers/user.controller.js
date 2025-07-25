@@ -9,7 +9,7 @@ import {
 } from "../validations/user.validation.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs/promises";
-import { read } from "fs";
+import jwt from "jsonwebtoken";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -226,4 +226,53 @@ export const aboutMe = asyncHandler(async (req, res) => {
   }
 
   return res.status(200).json(new ApiResponse(200, user, "User info."));
+});
+
+export const refresh = asyncHandler(async (req, res) => {
+  const refreshTokenFromCookies = req?.cookies?.refreshToken;
+
+  if (!refreshTokenFromCookies) {
+    throw new ApiError(401, "No refresh token found in cookies.");
+  }
+
+  try {
+    const decodeToken = jwt.verify(
+      refreshTokenFromCookies,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
+    const existingUser = await User.findById(decodeToken?._id);
+
+    if (
+      !existingUser ||
+      existingUser?.refreshToken !== refreshTokenFromCookies
+    ) {
+      throw new ApiError(403, "Refresh token invalid or expired.");
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+      existingUser?._id
+    );
+
+    const userPayload = {
+      _id: existingUser?._id,
+      name: existingUser?.name,
+      email: existingUser?.email,
+      role: existingUser?.role,
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, accessTokenOptions)
+      .cookie("refreshToken", refreshToken, refreshTokenOptions)
+      .json(
+        new ApiResponse(
+          200,
+          { user: userPayload, accessToken, refreshToken },
+          "Access token refresh successfully!"
+        )
+      );
+  } catch (error) {
+    throw new ApiError(401, "Token expired or invalid");
+  }
 });
