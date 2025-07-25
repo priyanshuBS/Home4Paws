@@ -1,12 +1,55 @@
-# React + Vite
+// Feature Configuration File (can be used in backend or UI planning)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+export const features = {
+core: [
+"Advanced Search by species, location, age, gender",
+"Save Pets to Favorites",
+"Smart Recommendations",
+"Location-Based Discovery"
+],
 
-Currently, two official plugins are available:
+petProfile: [
+"Detailed Pet Profiles with medical and vaccination info",
+"Schedule Visit or Video Call with shelter",
+"Image Gallery and optional pet video"
+],
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+engagement: [
+"User can post Adoption Stories",
+"Push Notifications / Email Alerts",
+"Like, Share, Comment on Pet Profiles"
+],
 
-## Expanding the ESLint configuration
+trustAndSafety: [
+"Verified Shelter/NGO Badges",
+"Auto-generated Adoption Agreement",
+"Pet Care Blog & Tips Section"
+],
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+adminPartner: [
+"Shelter/NGO Dashboard to manage listings",
+"Admin Dashboard with analytics",
+"Chat system between adopter and shelter"
+],
+
+monetization: [
+"Premium Featured Pet Listings",
+"Pet Product Store Integration",
+"Virtual Pet Sponsorship & Donations"
+],
+
+innovation: [
+"AI-based Pet Matcher Quiz",
+"Voice-based Pet Search",
+"Behavioral Tags for lifestyle matching"
+],
+
+mvpPriorities: [
+"Pet Categories UI",
+"Pet Detail Page",
+"Search & Filter Pets",
+"Add Pet Form",
+"User Auth & Role-based Dashboard",
+"Visit Booking or Contact Shelter"
+]
+};
