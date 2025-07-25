@@ -14,8 +14,10 @@ export const AuthProvider = ({ children }) => {
       const res = await api.get("/users/about-me");
       setUser(res?.data?.data);
       console.log("User: ", user);
+      return true;
     } catch (error) {
       setUser(null);
+      return false;
     } finally {
       setAuthLoading(false);
     }
@@ -69,7 +71,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const init = async () => {
-      await fetchUser();
+      const success = await fetchUser();
+
+      if (!success) {
+        try {
+          await api.post("/users/refresh");
+          await fetchUser();
+        } catch (err) {
+          console.log("Unable to refresh session.");
+        }
+      }
     };
     init();
   }, []);
