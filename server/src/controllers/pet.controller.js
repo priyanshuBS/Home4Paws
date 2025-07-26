@@ -49,3 +49,45 @@ export const getAllPets = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, allPets, "Fetch pets data successfully!"));
 });
+
+export const recentPets = asyncHandler(async (req, res) => {
+  const recentPets = await Pet.find().sort({ createdAt: -1 });
+
+  if (!recentPets) {
+    throw new ApiError(404, "No pets found.");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, recentPets, "Send pets data successfully!"));
+});
+
+export const likePets = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+  const petId = req.params.petId;
+
+  const pets = await Pet.findById(petId);
+  if (!pets) {
+    throw new ApiError(404, "No pets found.");
+  }
+
+  const alreadyLiked = pets.likedBy.includes(userId);
+
+  if (alreadyLiked) {
+    pets.likedBy.pull(userId);
+  } else {
+    pets.likedBy.push(userId);
+  }
+
+  await pets.save();
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { likedBy: pets.likedBy },
+        `${alreadyLiked ? "Unliked" : "Liked"}`
+      )
+    );
+});

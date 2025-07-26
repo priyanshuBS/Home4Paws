@@ -58,6 +58,12 @@ const petSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    likedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
