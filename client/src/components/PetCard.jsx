@@ -1,3 +1,4 @@
+// src/components/PetCard.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -7,6 +8,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useToggleLike } from "../hooks/useToggleLike.js";
+import { useAuth } from "../auth/AuthProvider"; // ensure this provides user object
 
 const PetCard = ({ pet }) => {
   const {
@@ -20,10 +23,24 @@ const PetCard = ({ pet }) => {
     vaccinated,
     neutered,
     adopted,
+    likedBy = [],
   } = pet;
 
-  const [liked, setLiked] = useState(false);
+  const { user } = useAuth();
+  const { isLiked, toggleLike, likeCount } = useToggleLike(
+    likedBy,
+    _id,
+    user?._id
+  );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleLike = () => {
+    if (!user) {
+      alert("Please login to like this pet.");
+      return;
+    }
+    toggleLike();
+  };
 
   const handleNext = () => {
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
@@ -37,15 +54,21 @@ const PetCard = ({ pet }) => {
     <div className="bg-white rounded-2xl relative shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300 overflow-hidden max-w-sm">
       {/* Like Button */}
       <button
-        onClick={() => setLiked((prev) => !prev)}
-        className="absolute top-3 right-3 z-10 bg-white rounded-full p-1 shadow hover:scale-105 transition"
+        onClick={handleLike}
+        className="absolute top-3 right-3 z-10 bg-white cursor-pointer rounded-full p-1 shadow hover:scale-105 transition"
+        title={isLiked ? "Unlike" : "Like"}
       >
         <Heart
-          className={`w-5 h-5 ${
-            liked ? "fill-red-500 text-red-500" : "text-gray-400"
+          className={`w-5 h-5 transition ${
+            isLiked ? "fill-red-500 text-red-500" : "text-gray-400"
           }`}
         />
       </button>
+
+      {/* Like Count */}
+      <span className="absolute top-3 right-10 bg-white text-xs text-gray-700 px-2 py-0.5 rounded-full shadow">
+        {likeCount}
+      </span>
 
       {/* Image Carousel */}
       <div className="relative group w-full h-56">
@@ -72,7 +95,7 @@ const PetCard = ({ pet }) => {
         )}
       </div>
 
-      {/* Simplified Pet Info */}
+      {/* Pet Info */}
       <div className="p-4 space-y-1">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium text-gray-800">{name}</h3>
