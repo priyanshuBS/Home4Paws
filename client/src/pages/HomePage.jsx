@@ -13,15 +13,32 @@ const categories = [
 ];
 
 const HomePage = () => {
-  const [pets, setPets] = useState([]);
+  const [recentPets, setRecentPets] = useState([]);
+  const [featuredPets, setFeaturedPets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api
-      .get("/pets")
-      .then((res) => setPets(res.data.pets))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+    const fetchPets = async () => {
+      try {
+        const [recentRes, featuredRes] = await Promise.all([
+          api.get("/pets/recent"),
+          api.get("/pets/featured"),
+        ]);
+
+        console.log(recentPets.data, featuredPets.data);
+
+        setRecentPets(recentRes?.data?.data || []);
+        setFeaturedPets(featuredRes?.data?.data || []);
+      } catch (error) {
+        console.error("Error fetching pets:", error);
+        setFeaturedPets([]);
+        setRecentPets([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPets();
   }, []);
 
   return (
@@ -54,7 +71,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Latest Pets Section */}
+      {/* Recently Added Section */}
       <section className="mb-20">
         <h2 className="text-3xl font-bold mb-6 text-center text-pink-500">
           🐾 Recently Added
@@ -62,14 +79,12 @@ const HomePage = () => {
         <p className="text-center text-gray-500 mb-8">
           Meet the newest companions waiting to meet you!
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-12">
           {loading
             ? Array.from({ length: 8 }).map((_, i) => (
                 <PetCardSkeleton key={i} />
               ))
-            : pets
-                .slice(0, 8)
-                .map((pet) => <PetCard key={pet._id} pet={pet} />)}
+            : recentPets.map((pet) => <PetCard key={pet._id} pet={pet} />)}
         </div>
       </section>
 
@@ -81,12 +96,12 @@ const HomePage = () => {
         <p className="text-center text-gray-500 mb-8">
           These pets are specially chosen and need a forever home soon.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {!loading &&
-            pets
-              .filter((pet) => pet.featured)
-              .slice(0, 6)
-              .map((pet) => <PetCard key={pet._id} pet={pet} />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-12">
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <PetCardSkeleton key={`featured-${i}`} />
+              ))
+            : featuredPets.map((pet) => <PetCard key={pet._id} pet={pet} />)}
         </div>
       </section>
     </div>
