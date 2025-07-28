@@ -12,9 +12,14 @@ const adoptionRequestSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     status: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
+      enum: ["pending", "accepted", "rejected"],
       default: "pending",
     },
   },
