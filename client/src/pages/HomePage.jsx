@@ -81,7 +81,7 @@ const HomePage = () => {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-12">
           {loading
-            ? Array.from({ length: 8 }).map((_, i) => (
+            ? Array.from({ length: 9 }).map((_, i) => (
                 <PetCardSkeleton key={i} />
               ))
             : recentPets.map((pet) => <PetCard key={pet._id} pet={pet} />)}

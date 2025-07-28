@@ -41,10 +41,10 @@ const Pets = () => {
         </div>
 
         {/* Conditionally render Add Pet Button */}
-        {user?.role === "owner" && (
+        {(user?.role === "owner" || user?.role === "admin") && (
           <button
             onClick={() => navigate("/add-pet")}
-            className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-xl text-sm sm:text-base font-semibold shadow transition"
+            className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-xl text-sm sm:text-base font-semibold shadow transition cursor-pointer"
           >
             <Plus className="w-5 h-5" />
             Add Pet
@@ -56,7 +56,7 @@ const Pets = () => {
       <div className="min-h-[300px]">
         {loading ? (
           <div className="grid gap-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-            {Array.from({ length: 8 }).map((_, index) => (
+            {Array.from({ length: 9 }).map((_, index) => (
               <PetCardSkeleton key={index} />
             ))}
           </div>
@@ -83,7 +83,7 @@ const Pets = () => {
             {user?.role === "owner" && (
               <button
                 onClick={() => navigate("/add-pet")}
-                className="mt-6 bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-lg font-medium shadow transition"
+                className="mt-6 bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-lg font-medium shadow transition cursor-pointer"
               >
                 Add Your First Pet
               </button>

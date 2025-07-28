@@ -40,6 +40,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const signup = async (signupData) => {
+    setAuthLoading(true);
+    setAuthError(null);
+    try {
+      await api.post("/users/signup", signupData);
+      await fetchUser();
+      toast.success("Signup successful!");
+      return { success: true };
+    } catch (err) {
+      const message =
+        err?.response?.data?.message || err?.message || "Signup failed";
+      toast.error(message);
+      setAuthError(message);
+      return { success: false, error: message };
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   const logout = async () => {
     try {
       await api.post("/users/logout");
@@ -48,12 +67,21 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       toast.error("Logout failed");
+      return { success: false, error: error?.message };
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, authLoading, authError, login, logout, fetchUser }}
+      value={{
+        user,
+        authLoading,
+        authError,
+        login,
+        logout,
+        signup,
+        fetchUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
