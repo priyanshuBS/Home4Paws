@@ -36,6 +36,17 @@ const PetInfo = () => {
     );
   };
 
+  const handleAdoptNow = async () => {
+    try {
+      const res = await api.post(`/adoption/request/${petId}`);
+      toast.success(res?.data?.message);
+    } catch (err) {
+      const message =
+        err?.response?.data?.message || "Failed to request adoption";
+      toast.error(message);
+    }
+  };
+
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (!pet)
     return <div className="text-center p-4 text-red-600">Pet not found.</div>;
@@ -55,8 +66,6 @@ const PetInfo = () => {
     images = [],
     owner,
   } = pet;
-
-  console.log(pet);
 
   return (
     <div className="w-full bg-gradient-to-r from-gray-100 to-gray-50 via-gray-100">
@@ -179,7 +188,10 @@ const PetInfo = () => {
                 Chat with Owner
               </button>
               {!adopted && (
-                <button className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-emerald-600 hover:brightness-110 text-white text-sm font-semibold px-6 py-2 rounded-lg transition-all cursor-pointer">
+                <button
+                  onClick={handleAdoptNow}
+                  className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-emerald-600 hover:brightness-110 text-white text-sm font-semibold px-6 py-2 rounded-lg transition-all cursor-pointer"
+                >
                   Adopt Now
                 </button>
               )}
