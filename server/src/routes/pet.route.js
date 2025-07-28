@@ -6,6 +6,7 @@ import {
   recentPets,
   likePets,
   featurePets,
+  petInfoById,
 } from "../controllers/pet.controller.js";
 import upload from "../middlewares/multer.middleware.js";
 
@@ -16,5 +17,6 @@ router.route("/petsData").get(verifyJWT, getAllPets);
 router.route("/recent").get(verifyJWT, recentPets);
 router.route("/featured").get(verifyJWT, featurePets);
 router.route("/:petId/like").post(verifyJWT, likePets);
+router.route("/:id").get(verifyJWT, petInfoById);
 
 export default router;
