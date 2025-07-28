@@ -115,3 +115,16 @@ export const featurePets = asyncHandler(async (req, res) => {
       new ApiResponse(200, likedPets, "Fetch liked pets data successfully!")
     );
 });
+
+export const petInfoById = asyncHandler(async (req, res) => {
+  const id = req?.params?.id;
+  const pet = await Pet.findById(id);
+
+  if (!pet) {
+    throw new ApiError(404, "No pet found.");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, pet, "Fetch pet data successfully!"));
+});
