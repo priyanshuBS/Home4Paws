@@ -25,8 +25,6 @@ const HomePage = () => {
           api.get("/pets/featured"),
         ]);
 
-        console.log(recentPets.data, featuredPets.data);
-
         setRecentPets(recentRes?.data?.data || []);
         setFeaturedPets(featuredRes?.data?.data || []);
       } catch (error) {
