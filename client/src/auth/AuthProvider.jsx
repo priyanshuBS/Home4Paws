@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "../api/api";
-import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -8,66 +8,54 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false); // ✅ tracks first fetch
 
   const fetchUser = async () => {
     setAuthLoading(true);
     try {
       const res = await api.get("/users/about-me");
       setUser(res?.data?.data);
-      return true;
-    } catch (error) {
+    } catch (err) {
       setUser(null);
-      return false;
     } finally {
       setAuthLoading(false);
+      setIsInitialized(true);
     }
   };
 
-  const login = async (loginData) => {
+  const login = async (payload) => {
     setAuthLoading(true);
-    setAuthError(null);
     try {
-      await api.post("/users/login", loginData);
+      await api.post("/users/login", payload);
       await fetchUser();
-      toast.success("Login successful!");
-      return { success: true };
     } catch (err) {
-      setAuthError(err?.message);
-      toast.error("Login failed");
-      return { success: false, error: err?.message };
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const signup = async (signupData) => {
-    setAuthLoading(true);
-    setAuthError(null);
-    try {
-      await api.post("/users/signup", signupData);
-      await fetchUser();
-      toast.success("Signup successful!");
-      return { success: true };
-    } catch (err) {
-      const message =
-        err?.response?.data?.message || err?.message || "Signup failed";
-      toast.error(message);
-      setAuthError(message);
-      return { success: false, error: message };
+      setAuthError(err?.response?.data?.message || "Login failed");
     } finally {
       setAuthLoading(false);
     }
   };
 
   const logout = async () => {
+    setAuthLoading(true);
     try {
       await api.post("/users/logout");
       setUser(null);
-      toast.success("Logout successful!");
-      return { success: true };
-    } catch (error) {
-      toast.error("Logout failed");
-      return { success: false, error: error?.message };
+    } catch (err) {
+      setAuthError(err?.response?.data?.message || "Logout failed");
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const signup = async (payload) => {
+    setAuthLoading(true);
+    try {
+      await api.post("/users/register", payload);
+      await fetchUser();
+    } catch (err) {
+      setAuthError(err?.response?.data?.message || "Signup failed");
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -81,6 +69,8 @@ export const AuthProvider = ({ children }) => {
         logout,
         signup,
         fetchUser,
+        setUser,
+        isInitialized,
       }}
     >
       {children}
