@@ -7,6 +7,9 @@ import Login from "../pages/Login";
 import Pets from "../pages/Pets";
 import AddPet from "../pages/AddPet";
 import PetInfo from "../pages/PetInfo";
+import Unauthorized from "../pages/Unauthorized";
+import ProtectedRoute from "../components/ProtectedRoute";
+import OwnerDashboard from "../pages/OwnerDashboard";
 
 const appRouter = createBrowserRouter([
   {
@@ -44,6 +47,18 @@ const appRouter = createBrowserRouter([
       {
         path: "pets/:petId",
         element: <PetInfo />,
+      },
+      {
+        path: "unauthorized",
+        element: <Unauthorized />,
+      },
+      {
+        path: "owner-dashboard",
+        element: (
+          <ProtectedRoute allowedRoles={["owner", "admin"]}>
+            <OwnerDashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
