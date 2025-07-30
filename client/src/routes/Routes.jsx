@@ -46,7 +46,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "pets/:petId",
-        element: <PetInfo />,
+        element: (
+          <ProtectedRoute allowedRoles={["customer"]}>
+            <PetInfo />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "unauthorized",
