@@ -11,9 +11,9 @@ const router = express.Router();
 router.route("/request/:petId").post(verifyJWT, requestAdoption);
 router
   .route("/adoption-request")
-  .get(verifyJWT, authorizeRoles("owner"), ownerAdoptionRequest);
+  .get(verifyJWT, authorizeRoles("owner, admin"), ownerAdoptionRequest);
 router
   .route("/adoption-request/:requestId")
-  .post(verifyJWT, authorizeRoles("owner"), updateAdoptionRequestStatus);
+  .post(verifyJWT, authorizeRoles("owner, admin"), updateAdoptionRequestStatus);
 
 export default router;
