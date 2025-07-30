@@ -26,8 +26,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (payload) => {
     setAuthLoading(true);
     try {
-      await api.post("/users/login", payload);
+      const res = await api.post("/users/login", payload);
       await fetchUser();
+      return res?.data;
     } catch (err) {
       setAuthError(err?.response?.data?.message || "Login failed");
     } finally {
