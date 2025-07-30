@@ -23,7 +23,8 @@ const Login = () => {
     e.preventDefault();
     console.log("Login submitted:", formData);
     const result = await login(formData);
-    if (result.success) {
+    console.log(result);
+    if (result?.success) {
       navigate("/home");
     }
   };
