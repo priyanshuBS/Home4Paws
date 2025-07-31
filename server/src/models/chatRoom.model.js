@@ -7,15 +7,21 @@ const chatRoomSchema = new mongoose.Schema(
       ref: "Pet",
       required: true,
     },
-    users: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-    ],
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
+
+// Prevent duplicate chat rooms for same pet-owner-customer
+chatRoomSchema.index({ pet: 1, owner: 1, customer: 1 }, { unique: true });
 
 export const ChatRoom = mongoose.model("ChatRoom", chatRoomSchema);
