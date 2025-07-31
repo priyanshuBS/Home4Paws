@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { Message } from "../models/message.model.js";
+import { ChatRoom } from "../models/chatRoom.model.js";
 
 function initSocket(server) {
   const io = new Server(server, {
@@ -12,21 +13,45 @@ function initSocket(server) {
   io.on("connection", (socket) => {
     console.log("Socket connected:", socket.id);
 
-    socket.on("joinRoom", (roomId) => {
+    // Custom property to track current user
+    socket.userId = socket.handshake.auth?.userId;
+
+    socket.on("chat:join", async (roomId) => {
+      const room = await ChatRoom.findById(roomId);
+
+      if (
+        !room ||
+        ![room.owner.toString(), room.customer.toString()].includes(
+          socket.userId
+        )
+      ) {
+        return socket.emit("chat:error", "Unauthorized to join this room");
+      }
+
       socket.join(roomId);
+      socket.emit("chat:joined", roomId);
     });
 
-    socket.on("sendMessage", async ({ roomId, sender, content }) => {
-      try {
-        const message = await Message.create({
-          chatRoom: roomId,
-          sender,
-          content,
-        });
-        io.to(roomId).emit("newMessage", message);
-      } catch (error) {
-        console.error("Socket message error:", error);
+    socket.on("chat:send", async ({ roomId, content }) => {
+      if (!content || !roomId) return;
+
+      const room = await ChatRoom.findById(roomId);
+      if (
+        !room ||
+        ![room.owner.toString(), room.customer.toString()].includes(
+          socket.userId
+        )
+      ) {
+        return socket.emit("chat:error", "Unauthorized to send message");
       }
+
+      const message = await Message.create({
+        chatRoom: roomId,
+        sender: socket.userId,
+        content,
+      });
+
+      io.to(roomId).emit("chat:message", message);
     });
 
     socket.on("disconnect", () => {
