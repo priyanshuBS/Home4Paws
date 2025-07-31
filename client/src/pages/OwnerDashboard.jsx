@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
 import toast from "react-hot-toast";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const OwnerDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchRequests = async () => {
     try {
@@ -25,6 +27,20 @@ const OwnerDashboard = () => {
       setRequests((prev) => prev.filter((r) => r._id !== requestId));
     } catch (err) {
       toast.error(`Failed to ${status} request`);
+    }
+  };
+
+  const handleChat = async (petId, customerId) => {
+    try {
+      const res = await api.post("/chat/initiate", { petId, customerId });
+      const conversationId = res.data?.data?._id;
+      if (conversationId) {
+        navigate(`/chat/${conversationId}`);
+      } else {
+        toast.error("Failed to start chat");
+      }
+    } catch (err) {
+      toast.error("Chat initiation failed");
     }
   };
 
@@ -55,11 +71,11 @@ const OwnerDashboard = () => {
             No pending adoption requests.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {requests.map((req) => (
               <div
                 key={req._id}
-                className="bg-white border border-gray-200 shadow-md hover:shadow-lg rounded-xl p-6 flex flex-col justify-between transition-all duration-300 ease-in-out"
+                className="bg-white border border-gray-200 shadow-sm hover:shadow-md rounded-xl p-6 flex flex-col justify-between transition-all duration-300 ease-in-out h-full"
               >
                 <div className="mb-5 space-y-2">
                   <h2 className="text-xl font-semibold text-gray-800">
@@ -92,20 +108,30 @@ const OwnerDashboard = () => {
                   </p>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex flex-col gap-3 mt-auto">
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleAction(req._id, "accepted")}
+                      className="flex-1 border border-indigo-300 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-all cursor-pointer"
+                    >
+                      <CheckCircle size={18} className="text-indigo-500" />
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleAction(req._id, "rejected")}
+                      className="flex-1 border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-all cursor-pointer"
+                    >
+                      <XCircle size={18} className="text-slate-500" />
+                      Reject
+                    </button>
+                  </div>
+
                   <button
-                    onClick={() => handleAction(req._id, "accepted")}
-                    className="flex-1 border border-indigo-300 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-all cursor-pointer"
+                    onClick={() => handleChat(req.pet?._id, req.customer?._id)}
+                    className="w-full border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-all cursor-pointer"
                   >
-                    <CheckCircle size={18} className="text-indigo-500" />
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => handleAction(req._id, "rejected")}
-                    className="flex-1 border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-all cursor-pointer"
-                  >
-                    <XCircle size={18} className="text-slate-500" />
-                    Reject
+                    <MessageCircle size={18} className="text-emerald-500" />
+                    Chat with Customer
                   </button>
                 </div>
               </div>

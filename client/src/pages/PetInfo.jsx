@@ -40,6 +40,7 @@ const PetInfo = () => {
     try {
       const res = await api.post(`/adoption/request/${petId}`);
       toast.success(res?.data?.message);
+      console.log(pet);
     } catch (err) {
       const message =
         err?.response?.data?.message || "Failed to request adoption";
@@ -190,9 +191,14 @@ const PetInfo = () => {
               {!adopted && (
                 <button
                   onClick={handleAdoptNow}
-                  className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-emerald-600 hover:brightness-110 text-white text-sm font-semibold px-6 py-2 rounded-lg transition-all cursor-pointer"
+                  disabled={pet.adopted}
+                  className={`w-full ${
+                    pet.adopted
+                      ? "bg-gray-500 text-white px-6 py-2 rounded-lg cursor-not-allowed opacity-70"
+                      : "bg-gradient-to-r from-green-500 to-emerald-600 hover:brightness-110 text-white cursor-pointer"
+                  } sm:w-auto text-sm font-semibold px-6 py-2 rounded-lg transition-all`}
                 >
-                  Adopt Now
+                  {pet.adopted ? "Adopted" : "Adopt Now"}
                 </button>
               )}
             </div>
