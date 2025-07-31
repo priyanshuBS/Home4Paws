@@ -54,6 +54,8 @@ export const ownerAdoptionRequest = asyncHandler(async (req, res) => {
     .populate("pet", "name")
     .populate("customer", "name email");
 
+  console.log(requests);
+
   return res
     .status(200)
     .json(new ApiResponse(200, requests, "Fetched owner adoption requests"));
@@ -79,6 +81,10 @@ export const updateAdoptionRequestStatus = asyncHandler(async (req, res) => {
 
   request.status = status;
   await request.save();
+
+  if (status === "accepted") {
+    await Pet.findByIdAndUpdate(request?.pet, { adopted: true });
+  }
 
   return res
     .status(200)
