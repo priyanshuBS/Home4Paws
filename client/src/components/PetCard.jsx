@@ -125,11 +125,11 @@ const PetCard = ({ pet }) => {
               🧪 Neutered
             </span>
           )}
-          {adopted && (
+          {/* {adopted && (
             <span className="inline-flex items-center gap-1 bg-red-50 text-red-600 px-3 py-1 rounded-full">
               ❤️ Adopted
             </span>
-          )}
+          )} */}
         </div>
 
         {/* View Details Button */}
