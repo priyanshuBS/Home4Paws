@@ -51,8 +51,9 @@ export const AuthProvider = ({ children }) => {
   const signup = async (payload) => {
     setAuthLoading(true);
     try {
-      await api.post("/users/register", payload);
+      const res = await api.post("/users/signup", payload);
       await fetchUser();
+      return res?.data;
     } catch (err) {
       setAuthError(err?.response?.data?.message || "Signup failed");
     } finally {
