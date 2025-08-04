@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import { Message } from "../models/message.model.js";
 import { ChatRoom } from "../models/chatRoom.model.js";
+import cookie from "cookie";
 
 function initSocket(server) {
   const io = new Server(server, {
@@ -13,7 +14,9 @@ function initSocket(server) {
 
   // Middleware to verify JWT in socket handshake
   io.use((socket, next) => {
-    const token = socket.handshake.auth?.token;
+    const parsedCookie = cookie.parse(socket.handshake.headers.cookie || "");
+    console.log(parsedCookie);
+    const token = parsedCookie.accessToken;
 
     if (!token) return next(new Error("Authentication token missing"));
 
@@ -53,6 +56,7 @@ function initSocket(server) {
 
     // Send a message
     socket.on("chat:send", async ({ roomId, content }) => {
+      console.log("hello");
       if (!roomId || !content?.trim()) return;
 
       try {
@@ -73,11 +77,15 @@ function initSocket(server) {
           content,
         });
 
+        console.log(message);
+
         // Optional: Populate sender info for better frontend display
         const populatedMessage = await Message.findById(message._id).populate(
           "sender",
           "name avatar"
         );
+
+        console.log(populatedMessage);
 
         io.to(roomId).emit("chat:message", populatedMessage);
       } catch (err) {
