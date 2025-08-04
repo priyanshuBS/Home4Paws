@@ -10,6 +10,7 @@ import PetInfo from "../pages/PetInfo";
 import Unauthorized from "../pages/Unauthorized";
 import ProtectedRoute from "../components/ProtectedRoute";
 import OwnerDashboard from "../pages/OwnerDashboard";
+import ChatPage from "../pages/ChatPage";
 
 const appRouter = createBrowserRouter([
   {
@@ -61,6 +62,14 @@ const appRouter = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["owner", "admin"]}>
             <OwnerDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "chat/:chatRoomId",
+        element: (
+          <ProtectedRoute allowedRoles={["customer", "owner"]}>
+            <ChatPage />
           </ProtectedRoute>
         ),
       },
