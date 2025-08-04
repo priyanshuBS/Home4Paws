@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../api/api";
 import toast from "react-hot-toast";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, CodeSquare } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PetInfo = () => {
   const { petId } = useParams();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPet = async () => {
@@ -45,6 +47,26 @@ const PetInfo = () => {
       const message =
         err?.response?.data?.message || "Failed to request adoption";
       toast.error(message);
+    }
+  };
+
+  const handleChatWithOwner = async () => {
+    try {
+      const res = await api.post("/chat/initiate", {
+        petId,
+        otherUserId: owner,
+      });
+      console.log(res);
+      const conversationId = res.data?.chatRoom?._id;
+      if (conversationId) {
+        navigate(`/chat/${conversationId}`);
+      } else {
+        toast.error("Could not start chat");
+      }
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || "Failed to initiate chat with owner"
+      );
     }
   };
 
@@ -185,7 +207,10 @@ const PetInfo = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 mt-4">
-              <button className="w-full sm:w-auto bg-neutral-900 hover:bg-black text-white text-sm font-semibold px-6 py-2 rounded-lg transition-all cursor-pointer">
+              <button
+                onClick={handleChatWithOwner}
+                className="w-full sm:w-auto bg-neutral-900 hover:bg-black text-white text-sm font-semibold px-6 py-2 rounded-lg transition-all cursor-pointer"
+              >
                 Chat with Owner
               </button>
               {!adopted && (
