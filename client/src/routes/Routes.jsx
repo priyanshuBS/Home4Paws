@@ -68,7 +68,7 @@ const appRouter = createBrowserRouter([
       {
         path: "chat/:chatRoomId",
         element: (
-          <ProtectedRoute allowedRoles={["customer", "owner"]}>
+          <ProtectedRoute allowedRoles={["customer", "owner", "admin"]}>
             <ChatPage />
           </ProtectedRoute>
         ),
