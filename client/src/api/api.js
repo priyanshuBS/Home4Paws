@@ -6,32 +6,23 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-let hasTriedRefresh = false;
-
 api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const originalRequest = err.config;
 
-    const isAboutMeRequest = originalRequest?.url?.includes("/users/about-me");
+    const isAboutMe = originalRequest?.url?.includes("/users/about-me");
 
-    if (
-      err.response?.status === 401 &&
-      isAboutMeRequest &&
-      !originalRequest._retry &&
-      !hasTriedRefresh
-    ) {
+    if (err.response?.status === 401 && isAboutMe && !originalRequest._retry) {
       originalRequest._retry = true;
-      hasTriedRefresh = true;
 
       try {
         await api.post("/users/refresh");
-        return api(originalRequest); // retry about-me once
+
+        return api(originalRequest);
       } catch (refreshError) {
         toast.error("Session expired. Please log in again.");
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 100);
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
