@@ -15,7 +15,7 @@ function initSocket(server) {
   // Middleware to verify JWT in socket handshake
   io.use((socket, next) => {
     const parsedCookie = cookie.parse(socket.handshake.headers.cookie || "");
-    console.log(parsedCookie);
+
     const token = parsedCookie.accessToken;
 
     if (!token) return next(new Error("Authentication token missing"));

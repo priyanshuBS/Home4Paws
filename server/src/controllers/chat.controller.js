@@ -13,6 +13,9 @@ export const initiateChatRoom = asyncHandler(async (req, res) => {
   const { petId, otherUserId } = req.body;
   const currentUserId = req.user._id;
 
+  console.log(petId, otherUserId);
+
+
   if (!petId || !otherUserId) {
     throw new ApiError(400, "Pet ID and other user ID are required");
   }

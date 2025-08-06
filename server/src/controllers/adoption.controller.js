@@ -54,7 +54,6 @@ export const ownerAdoptionRequest = asyncHandler(async (req, res) => {
     .populate("pet", "name")
     .populate("customer", "name email");
 
-  console.log(requests);
 
   return res
     .status(200)
