@@ -11,9 +11,16 @@ initSocket(server);
 
 connectDB()
   .then(() => {
-    server.listen(PORT, () => {
-      console.log(`Server is running at PORT: ${PORT}`);
-    });
+    server
+      .listen(PORT, () => {
+        console.log(`Server is running at PORT: ${PORT}`);
+      })
+      .on("error", (err) => {
+        if (err.code === "EADDRINUSE") {
+          console.error(`PORT: ${PORT} is already in use!`);
+          process.exit(1);
+        }
+      });
   })
   .catch((err) => {
     console.log("ERROR!! While connecting to MongoDB!", err);
