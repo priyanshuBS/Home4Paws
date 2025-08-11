@@ -3,6 +3,7 @@ import socket from "../api/socket";
 import { useAuth } from "../auth/AuthProvider";
 import { api } from "../api/api";
 import toast from "react-hot-toast";
+import { Send } from "lucide-react";
 
 const ChatWindow = ({ chatRoomId }) => {
   const { user } = useAuth();
@@ -44,7 +45,7 @@ const ChatWindow = ({ chatRoomId }) => {
         const res = await api.get(`/chat/${chatRoomId}/messages`, {
           withCredentials: true,
         });
-        setMessages(res?.data?.message || []);
+        setMessages(res?.data?.messages || []);
       } catch (err) {
         toast.error("Failed to load messages");
       } finally {
@@ -65,66 +66,81 @@ const ChatWindow = ({ chatRoomId }) => {
   };
 
   return (
-    <div className="flex flex-col h-full max-h-screen bg-white rounded-xl shadow-lg border md:m-4 m-2">
+    <div className="flex flex-col h-full max-h-screen bg-white border border-gray-200 rounded-xl overflow-hidden md:m-4 m-2">
       {/* Header */}
-      <div className="p-4 border-b bg-white sticky top-0 z-10 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center font-bold text-emerald-600">
+      <div className="p-5 sticky top-0 z-10 flex items-center gap-3 bg-gray-50 border-b border-gray-200">
+        <div className="w-10 h-10 rounded-full bg-pink-700 flex items-center justify-center text-white text-lg shadow-sm">
           💬
         </div>
-        <h2 className="text-lg font-semibold">Conversation</h2>
+        <h2 className="text-lg font-semibold text-gray-800 tracking-tight">
+          Conversation
+        </h2>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50">
         {loading ? (
-          <p className="text-center text-gray-500">Loading messages...</p>
+          <p className="text-center text-gray-500 text-sm">
+            Loading messages...
+          </p>
         ) : messages.length === 0 ? (
-          <p className="text-center text-gray-500">No messages yet</p>
+          <p className="text-center text-gray-500 text-sm">No messages yet</p>
         ) : (
-          messages.map((msg) => (
-            <div
-              key={msg._id}
-              className={`flex ${
-                msg.sender._id === user._id ? "justify-end" : "justify-start"
-              }`}
-            >
+          messages.map((msg) => {
+            const isOwnMessage = msg.sender._id === user._id;
+            return (
               <div
-                className={`px-4 py-2 rounded-2xl max-w-xs sm:max-w-sm md:max-w-md text-sm shadow-md ${
-                  msg.sender._id === user._id
-                    ? "bg-emerald-500 text-white"
-                    : "bg-gray-100 text-gray-800"
+                key={msg._id}
+                className={`flex ${
+                  isOwnMessage ? "justify-end" : "justify-start"
                 }`}
               >
-                <div>{msg.content}</div>
-                <div className="text-[10px] text-right mt-1 opacity-70">
-                  {new Date(msg.createdAt).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                <div
+                  className={`px-4 py-2 rounded-2xl max-w-xs sm:max-w-sm md:max-w-md text-sm shadow-sm transition ${
+                    isOwnMessage
+                      ? "bg-gray-700 text-white rounded-br-none"
+                      : "bg-white text-gray-800 border border-gray-200 rounded-bl-none"
+                  }`}
+                >
+                  <div>{msg.content}</div>
+                  <div
+                    className={`text-[10px] mt-1 opacity-70 ${
+                      isOwnMessage
+                        ? "text-white/80 text-right"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
         <div ref={messagesEndRef} />
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t flex items-center gap-2 bg-white sticky bottom-0 z-10">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500"
-        />
-        <button
-          onClick={handleSend}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full text-sm font-semibold"
-        >
-          Send
-        </button>
+      <div className="p-4 bg-gray-50 sticky bottom-0 z-10 border-t border-gray-200">
+        <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-full px-3 py-2 shadow-sm">
+          <input
+            type="text"
+            placeholder="Type a message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            className="flex-1 bg-transparent text-sm outline-none"
+          />
+          <button
+            onClick={handleSend}
+            className="bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-full transition-colors"
+          >
+            <Send size={18} />
+          </button>
+        </div>
       </div>
     </div>
   );
