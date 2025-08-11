@@ -13,7 +13,6 @@ export const initiateChatRoom = asyncHandler(async (req, res) => {
   const { petId, otherUserId } = req.body;
   const currentUserId = req.user._id;
 
-
   if (!petId || !otherUserId) {
     throw new ApiError(400, "Pet ID and other user ID are required");
   }
@@ -67,6 +66,7 @@ export const getMyChatRooms = asyncHandler(async (req, res) => {
  */
 export const getChatMessages = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
+  console.log(roomId);
   const userId = req.user._id;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 20;
@@ -82,7 +82,7 @@ export const getChatMessages = asyncHandler(async (req, res) => {
   }
 
   const messages = await Message.find({ chatRoom: roomId })
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: 1 })
     .skip((page - 1) * limit)
     .limit(limit)
     .populate("sender", "name avatar");
