@@ -66,7 +66,6 @@ export const getMyChatRooms = asyncHandler(async (req, res) => {
  */
 export const getChatMessages = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
-  console.log(roomId);
   const userId = req.user._id;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 20;
