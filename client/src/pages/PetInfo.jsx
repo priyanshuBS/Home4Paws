@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../api/api";
 import toast from "react-hot-toast";
-import { ChevronLeft, ChevronRight, CodeSquare } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import PetInfoShimmer from "../ui/shimmer/PetInfoShimmer";
 
 const PetInfo = () => {
   const { petId } = useParams();
@@ -70,9 +71,7 @@ const PetInfo = () => {
     }
   };
 
-  if (loading) return <div className="text-center p-4">Loading...</div>;
-  if (!pet)
-    return <div className="text-center p-4 text-red-600">Pet not found.</div>;
+  if (!pet || loading) return <PetInfoShimmer />;
 
   const {
     name,
