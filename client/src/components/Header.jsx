@@ -2,9 +2,11 @@ import { PawPrint, Menu, User } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import { useAuth } from "../auth/AuthProvider";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
   return (
     <header className="bg-white shadow-2xl font-sans h-16 w-full flex items-center justify-between md:px-16 px-4">
       <div className="flex items-center gap-2">
@@ -16,6 +18,14 @@ const Header = () => {
         </Link>
       </div>
       <div className="md:flex items-center gap-10 hidden">
+        {user && (user?.role === "admin" || user?.role === "owner") && (
+          <Link
+            to="owner-dashboard"
+            className="text-gray-800 hover:text-pink-600 font-semibold hover:underline transition-all duration-200 ease-in "
+          >
+            Dashboard
+          </Link>
+        )}
         <Link
           to="/home"
           className="text-gray-800 hover:text-pink-600 font-semibold hover:underline transition-all duration-200 ease-in "

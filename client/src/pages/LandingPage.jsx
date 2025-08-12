@@ -2,36 +2,22 @@ import { Link } from "react-router-dom";
 import PetCardShimmer from "../components/PetCardShimmer";
 import { useState, useEffect } from "react";
 import WhyAdoptCard from "../components/WhyAdoptCard";
+import { api } from "../api/api";
 
 const LandingPage = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log(pets);
 
   // Simulate API call
   useEffect(() => {
-    setTimeout(() => {
-      setPets([
-        {
-          name: "Bella",
-          breed: "Golden Retriever",
-          age: "2 years",
-          img: "https://placedog.net/400/300?id=1",
-        },
-        {
-          name: "Luna",
-          breed: "Persian Cat",
-          age: "1 year",
-          img: "https://placekitten.com/400/300",
-        },
-        {
-          name: "Charlie",
-          breed: "Rabbit",
-          age: "8 months",
-          img: "https://placebear.com/400/300",
-        },
-      ]);
+    const fetchPetData = async () => {
+      const response = await api.get("/pets//featured");
+      const petData = response?.data?.data || [];
+      setPets(petData.slice(0, 3));
       setLoading(false);
-    }, 2000); // 2s delay to mimic loading
+    };
+    fetchPetData();
   }, []);
   return (
     <div className="bg-gray-100 px-2 md:px-6">
@@ -65,13 +51,14 @@ const LandingPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               {pets.map((pet, idx) => (
                 <div
-                  key={idx}
-                  className="bg-white rounded-3xl shadow-lg overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-xl"
+                  key={pet?._id}
+                  className="bg-white rounded-3xl shadow-lg overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-xl p-4"
                 >
+                  {console.log(pet)}
                   <img
-                    src={pet.img}
+                    src={pet.images[0]}
                     alt={pet.name}
-                    className="w-full h-60 object-cover"
+                    className="w-full h-60 object-cover rounded-2xl"
                   />
                   <div className="p-6 text-center">
                     <h3 className="text-xl font-bold text-gray-800 mb-1">
@@ -80,7 +67,7 @@ const LandingPage = () => {
                     <p className="text-gray-600 mb-1">{pet.breed}</p>
                     <p className="text-gray-500 text-sm mb-4">{pet.age} old</p>
                     <Link
-                      to="/home"
+                      to={`/pets/${pet?._id}`}
                       className="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-6 rounded-full shadow transition duration-300"
                     >
                       Adopt Me
