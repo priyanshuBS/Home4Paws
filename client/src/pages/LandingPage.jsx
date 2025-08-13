@@ -12,7 +12,7 @@ const LandingPage = () => {
   // Simulate API call
   useEffect(() => {
     const fetchPetData = async () => {
-      const response = await api.get("/pets//featured");
+      const response = await api.get("/pets/featured");
       const petData = response?.data?.data || [];
       setPets(petData.slice(0, 3));
       setLoading(false);
