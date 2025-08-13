@@ -56,7 +56,6 @@ function initSocket(server) {
 
     // Send a message
     socket.on("chat:send", async ({ roomId, content }) => {
-      console.log("hello");
       if (!roomId || !content?.trim()) return;
 
       try {
@@ -77,15 +76,11 @@ function initSocket(server) {
           content,
         });
 
-        console.log(message);
-
         // Optional: Populate sender info for better frontend display
         const populatedMessage = await Message.findById(message._id).populate(
           "sender",
           "name avatar"
         );
-
-        console.log(populatedMessage);
 
         io.to(roomId).emit("chat:message", populatedMessage);
       } catch (err) {

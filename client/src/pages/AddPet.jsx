@@ -45,8 +45,6 @@ const AddPet = () => {
       images: [...prev.images, ...files],
     }));
 
-    console.log(formData?.images);
-
     const newPreviews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews((prev) => [...prev, ...newPreviews]);
   };
@@ -66,10 +64,6 @@ const AddPet = () => {
     }
 
     try {
-      for (let pair of data.entries()) {
-        console.log(pair[0] + ": ", pair[1]);
-      }
-
       await api.post("/pets/add-pet", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });

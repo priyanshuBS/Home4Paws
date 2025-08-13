@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 const LandingPage = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(pets);
+  // console.log(pets);
 
   // Simulate API call
   useEffect(() => {
@@ -59,7 +59,6 @@ const LandingPage = () => {
                   key={pet?._id}
                   className="bg-white rounded-3xl shadow-lg overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-xl p-4"
                 >
-                  {console.log(pet)}
                   <img
                     src={pet.images[0]}
                     alt={pet.name}

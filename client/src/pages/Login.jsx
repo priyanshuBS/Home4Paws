@@ -21,9 +21,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login submitted:", formData);
     const result = await login(formData);
-    console.log(result);
     if (result?.success) {
       navigate("/home");
     }

@@ -43,7 +43,6 @@ const PetInfo = () => {
     try {
       const res = await api.post(`/adoption/request/${petId}`);
       toast.success(res?.data?.message);
-      console.log(pet);
     } catch (err) {
       const message =
         err?.response?.data?.message || "Failed to request adoption";
@@ -57,7 +56,6 @@ const PetInfo = () => {
         petId,
         otherUserId: owner,
       });
-      console.log(res);
       const conversationId = res.data?.chatRoom?._id;
       if (conversationId) {
         navigate(`/chat/${conversationId}`);

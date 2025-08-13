@@ -63,7 +63,6 @@ const HomePage = () => {
               key={index}
               name={category.name}
               image={category.image}
-              onClick={() => console.log(`Clicked category: ${category.name}`)}
             />
           ))}
         </div>

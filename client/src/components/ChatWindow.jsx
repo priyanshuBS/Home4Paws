@@ -18,9 +18,7 @@ const ChatWindow = ({ chatRoomId }) => {
     socket.connect();
     socket.emit("chat:join", chatRoomId);
 
-    socket.on("chat:joined", () => {
-      console.log("Joined room", chatRoomId);
-    });
+    socket.on("chat:joined", () => {});
 
     socket.on("chat:error", (error) => {
       toast.error(error);

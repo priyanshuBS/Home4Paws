@@ -33,7 +33,6 @@ const OwnerDashboard = () => {
   const handleChat = async (petId, otherUserId) => {
     try {
       const res = await api.post("/chat/initiate", { petId, otherUserId });
-      console.log(res);
       const conversationId = res.data?.chatRoom?._id;
       if (conversationId) {
         navigate(`/chat/${conversationId}`);
