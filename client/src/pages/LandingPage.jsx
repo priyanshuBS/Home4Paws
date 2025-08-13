@@ -3,6 +3,7 @@ import PetCardShimmer from "../components/PetCardShimmer";
 import { useState, useEffect } from "react";
 import WhyAdoptCard from "../components/WhyAdoptCard";
 import { api } from "../api/api";
+import toast from "react-hot-toast";
 
 const LandingPage = () => {
   const [pets, setPets] = useState([]);
@@ -12,10 +13,14 @@ const LandingPage = () => {
   // Simulate API call
   useEffect(() => {
     const fetchPetData = async () => {
-      const response = await api.get("/pets/featured");
-      const petData = response?.data?.data || [];
-      setPets(petData.slice(0, 3));
-      setLoading(false);
+      try {
+        const response = await api.get("/pets/featured");
+        const petData = response?.data?.data || [];
+        setPets(petData.slice(0, 3));
+        setLoading(false);
+      } catch (error) {
+        toast.error("Error! While fetching data");
+      }
     };
     fetchPetData();
   }, []);
