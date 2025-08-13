@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-// import {errorHandler} from "./middlewares/errorHandler.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import path from "path";
 
 const app = express();
 
@@ -27,6 +28,6 @@ app.use("/api/v1/pets", petRouter);
 app.use("/api/v1/adoption", adoptionRouter);
 app.use("/api/v1/chat", chatRouter);
 
-// app.use(errorHandler);
+app.use(errorHandler);
 
 export default app;
