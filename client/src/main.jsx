@@ -8,16 +8,6 @@ import { Toaster } from "react-hot-toast";
 import { SocketProvider } from "./context/SocketProvider.jsx";
 
 function AppWrapper() {
-  useEffect(() => {
-    if ("zoom" in document.body.style) {
-      document.body.style.zoom = "150%";
-    } else {
-      const root = document.getElementById("root");
-      root.style.transform = "scale(1.5)";
-      root.style.transformOrigin = "0 0";
-    }
-  }, []);
-
   return (
     <AuthProvider>
       <SocketProvider>
