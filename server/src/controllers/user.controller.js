@@ -33,14 +33,14 @@ const accessTokenOptions = {
   httpOnly: true,
   maxAge: 15 * 60 * 1000,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
+  sameSite: "none",
 };
 
 const refreshTokenOptions = {
   httpOnly: true,
   maxAge: 7 * 24 * 60 * 60 * 1000,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
+  sameSite: "none",
 };
 
 export const signpUser = asyncHandler(async (req, res) => {
