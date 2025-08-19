@@ -7,6 +7,7 @@ import { useAuth } from "../auth/AuthProvider";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
+
   return (
     <header className="bg-white shadow-2xl font-sans h-16 w-full flex items-center justify-between md:px-16 px-4">
       <div className="flex items-center gap-2">

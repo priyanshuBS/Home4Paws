@@ -4,7 +4,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { login, authLoading } = useAuth();
+  const { user, login, authLoading, logout } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -17,6 +17,14 @@ const Login = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    const res = await logout();
+    if (res == 200) {
+      navigate("/landing-page");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -91,6 +99,14 @@ const Login = () => {
           >
             Login
           </button>
+          {user && (
+            <button
+              onClick={handleLogout}
+              className="w-full underline flex justify-center items-center cursor-pointer text-gray-900 font-semibold transition duration-300 ease-in"
+            >
+              Logout
+            </button>
+          )}
         </form>
         <p className="mt-3 text-center text-gray-600 text-sm">
           Don’t have an account?{" "}

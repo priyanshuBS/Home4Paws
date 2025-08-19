@@ -4,12 +4,12 @@ import { useAuth } from "../auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const handleLogout = async (e) => {
     e.preventDefault();
-    const result = await logout();
-    if (result?.success) {
+    const res = await logout();
+    if (res == 200) {
       navigate("/landing-page");
     }
   };
@@ -48,12 +48,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         >
           Create Account
         </Link>
-        <Link
-          onClick={handleLogout}
-          className="font-semibold px-4 py-3 rounded-lg text-gray-700 hover:bg-pink-100 hover:ring-2 hover:ring-pink-300 hover:scale-105 transition-all duration-300 ease-in-out"
-        >
-          Logout
-        </Link>
+        {user && (
+          <Link
+            onClick={handleLogout}
+            className="font-semibold underline px-4 py-3 rounded-lg text-gray-700 hover:bg-pink-100 hover:ring-2 hover:ring-pink-300 hover:scale-105 transition-all duration-300 ease-in-out"
+          >
+            Logout
+          </Link>
+        )}
       </nav>
     </div>
   );

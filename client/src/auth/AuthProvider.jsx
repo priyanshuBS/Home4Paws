@@ -38,8 +38,10 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setAuthLoading(true);
     try {
-      await api.post("/users/logout");
+      const res = await api.post("/users/logout");
+      console.log(res);
       setUser(null);
+      return res.status;
     } catch (err) {
       setAuthError(err?.response?.data?.message || "Logout failed");
     } finally {
