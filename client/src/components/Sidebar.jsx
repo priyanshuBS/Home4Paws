@@ -56,6 +56,15 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             Logout
           </Link>
         )}
+        {(user?.role === "admin" || user?.role === "owner") && (
+          <Link
+            to="/owner-dashboard"
+            onClick={() => setIsOpen(false)}
+            className="font-semibold px-4 py-3 rounded-lg text-gray-700 hover:bg-pink-100 hover:ring-2 hover:ring-pink-300 hover:scale-105 transition-all duration-300 ease-in-out"
+          >
+            Dashboard
+          </Link>
+        )}
       </nav>
     </div>
   );
