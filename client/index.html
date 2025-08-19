@@ -11,9 +11,31 @@
     <div id="root"></div>
     <script>
       window.addEventListener("load", () => {
-        document.body.style.zoom = "150%";
+        // Check if it's a mobile device
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(
+          navigator.userAgent
+        );
+
+        if (isMobile) {
+          document.body.style.zoom = "120%";
+
+          // Fallback for browsers that don't support zoom
+          if (!document.body.style.zoom) {
+            document.body.style.transform = "scale(1.20)";
+            document.body.style.transformOrigin = "0 0";
+          }
+        } else {
+          document.body.style.zoom = "150%";
+
+          // Fallback for browsers that don't support zoom
+          if (!document.body.style.zoom) {
+            document.body.style.transform = "scale(1.5)";
+            document.body.style.transformOrigin = "0 0";
+          }
+        }
       });
     </script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
