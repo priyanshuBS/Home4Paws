@@ -69,7 +69,9 @@ const PetInfo = () => {
     }
   };
 
-  if (!pet || loading) return <PetInfoShimmer />;
+  if (loading || !pet) {
+    return <PetInfoShimmer />;
+  }
 
   const {
     name,

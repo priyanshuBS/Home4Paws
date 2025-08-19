@@ -6,11 +6,15 @@ import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import Pets from "../pages/Pets";
 import AddPet from "../pages/AddPet";
-import PetInfo from "../pages/PetInfo";
 import Unauthorized from "../pages/Unauthorized";
 import ProtectedRoute from "../components/ProtectedRoute";
 import OwnerDashboard from "../pages/OwnerDashboard";
 import ChatPage from "../pages/ChatPage";
+import { Suspense } from "react";
+import PetInfoShimmer from "../ui/shimmer/PetInfoShimmer";
+import { lazy } from "react";
+
+const PetInfo = lazy(() => import("../pages/PetInfo"));
 
 const appRouter = createBrowserRouter([
   {
@@ -49,7 +53,9 @@ const appRouter = createBrowserRouter([
         path: "pets/:petId",
         element: (
           <ProtectedRoute allowedRoles={["customer"]}>
-            <PetInfo />
+            <Suspense fallback={<PetInfoShimmer />}>
+              <PetInfo />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
