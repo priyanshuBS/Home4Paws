@@ -3,6 +3,7 @@ import { api } from "../api/api";
 import toast from "react-hot-toast";
 import { CheckCircle, XCircle, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import OwnerDashboardShimmer from "../ui/shimmer/OwnerDashboardShimmer";
 
 const OwnerDashboard = () => {
   const [requests, setRequests] = useState([]);
@@ -64,7 +65,7 @@ const OwnerDashboard = () => {
 
         {loading ? (
           <div className="text-center text-gray-500 text-lg animate-pulse">
-            Loading adoption requests...
+            <OwnerDashboardShimmer />
           </div>
         ) : requests.length === 0 ? (
           <div className="text-center text-gray-500 text-lg">

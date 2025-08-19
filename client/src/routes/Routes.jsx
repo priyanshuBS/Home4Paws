@@ -9,10 +9,9 @@ import AddPet from "../pages/AddPet";
 import Unauthorized from "../pages/Unauthorized";
 import ProtectedRoute from "../components/ProtectedRoute";
 import OwnerDashboard from "../pages/OwnerDashboard";
-import ChatPage from "../pages/ChatPage";
-import { Suspense } from "react";
 import PetInfoShimmer from "../ui/shimmer/PetInfoShimmer";
-import { lazy } from "react";
+import ChatPage from "../pages/ChatPage";
+import { lazy, Suspense } from "react";
 
 const PetInfo = lazy(() => import("../pages/PetInfo"));
 
