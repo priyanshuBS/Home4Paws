@@ -2,17 +2,13 @@ import { z } from "zod";
 
 export const addPetSchema = z.object({
   name: z.string().trim().min(3).max(50),
-  species: z.string().trim(),
+  category: z.string().trim(),
   breed: z.string().trim().default("Unknown"),
-  age: z.coerce.number().min(0), // <-- coercion added
+  age: z.coerce.number().min(0),
   gender: z.enum(["male", "female"]),
-  description: z
-    .string()
-    .trim()
-    .max(500, "Description can be up to 500 characters")
-    .optional(),
-  vaccinated: z.coerce.boolean().optional().default(false), // <-- coercion
-  neutered: z.coerce.boolean().optional().default(false), // <-- coercion
+  description: z.string().trim().max(500).optional(),
+  vaccinated: z.coerce.boolean().optional().default(false),
+  neutered: z.coerce.boolean().optional().default(false),
   adopted: z.coerce.boolean().optional().default(false),
   adoptionDate: z.coerce.date().optional(),
   location: z.string().trim(),

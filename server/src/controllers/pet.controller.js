@@ -13,6 +13,7 @@ export const addPet = asyncHandler(async (req, res) => {
   }
 
   const petData = parsedData?.data;
+  console.log(petData);
 
   const ownerId = req?.user?._id;
   petData.owner = ownerId;
@@ -127,4 +128,28 @@ export const petInfoById = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, pet, "Fetch pet data successfully!"));
+});
+
+const mainCategories = ["dog", "cat", "bird", "rabbit"];
+
+export const getPetsByCategory = asyncHandler(async (req, res) => {
+  const category = req.query.category?.toLowerCase();
+
+  if (!category) {
+    throw new ApiError(400, "Category is required");
+  }
+
+  const filter = {};
+
+  if (category === "other") {
+    filter.category = { $nin: mainCategories };
+  } else {
+    filter.category = category;
+  }
+
+  const pets = await Pet.find(filter).sort({ createdAt: -1 });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, pets, "Fetch pets data by category!"));
 });

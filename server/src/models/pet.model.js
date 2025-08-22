@@ -9,9 +9,9 @@ const petSchema = new mongoose.Schema(
       minLength: 3,
       maxLength: 60,
     },
-    species: {
+    category: {
       type: String,
-      required: [true, "Species is required"],
+      required: [true, "Category is required"],
     },
     breed: {
       type: String,
