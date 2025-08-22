@@ -18,7 +18,7 @@ router.route("/petsData").get(verifyJWT, getAllPets);
 router.route("/recent").get(verifyJWT, recentPets);
 router.route("/featured").get(verifyJWT, featurePets);
 router.route("/:petId/like").post(verifyJWT, likePets);
-router.route("/:id").get(verifyJWT, petInfoById);
 router.route("/category").get(verifyJWT, getPetsByCategory);
+router.route("/:id").get(verifyJWT, petInfoById);
 
 export default router;
