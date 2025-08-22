@@ -64,7 +64,7 @@ const ChatWindow = ({ chatRoomId }) => {
   };
 
   return (
-    <div className="flex flex-col h-full max-h-screen bg-white border border-gray-200 rounded-xl overflow-hidden md:m-4 m-2">
+    <div className="flex flex-col h-8/12 max-h-screen bg-white border border-gray-200 rounded-xl overflow-hidden mx-1">
       {/* Header */}
       <div className="p-4 sticky top-0 z-10 flex items-center gap-3 bg-gray-50 border-b border-gray-200">
         <div className="w-10 h-10 rounded-full bg-pink-700 flex items-center justify-center text-white text-lg shadow-sm">
