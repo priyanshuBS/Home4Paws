@@ -1,7 +1,16 @@
-const CategoryCard = ({ name, image, onClick }) => {
+import { useNavigate } from "react-router-dom";
+
+const CategoryCard = ({ name, image }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    const categorySlug = name.toLowerCase();
+    console.log(categorySlug);
+    navigate(`/category/${categorySlug}`);
+  };
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       className="cursor-pointer overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl transform hover:scale-105 transition duration-300 group"
     >
       <div className="relative aspect-square">

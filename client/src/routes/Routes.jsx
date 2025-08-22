@@ -12,6 +12,7 @@ import OwnerDashboard from "../pages/OwnerDashboard";
 import PetInfoShimmer from "../ui/shimmer/PetInfoShimmer";
 import ChatPage from "../pages/ChatPage";
 import { lazy, Suspense } from "react";
+import CategoryPage from "../pages/CategoryPage";
 
 const PetInfo = lazy(() => import("../pages/PetInfo"));
 
@@ -77,6 +78,10 @@ const appRouter = createBrowserRouter([
             <ChatPage />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "category/:categoryName",
+        element: <CategoryPage />,
       },
     ],
   },

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const initialState = {
   name: "",
-  species: "",
+  category: "",
   breed: "",
   age: "",
   gender: "",
@@ -58,12 +58,15 @@ const AddPet = () => {
     for (const [key, value] of Object.entries(formData)) {
       if (key === "images") {
         value.forEach((img) => data.append("images", img));
+      } else if (typeof value === "boolean") {
+        data.append(key, value ? "true" : "false"); // ✅ ensure consistent strings
       } else {
         data.append(key, value);
       }
     }
 
     try {
+      console.log("Pet data sending to backend for save: ", data);
       await api.post("/pets/add-pet", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -78,7 +81,7 @@ const AddPet = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-6">
+    <div className="py-12 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center px-3">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-4xl bg-white p-10 rounded-3xl shadow-2xl space-y-8"
@@ -100,9 +103,9 @@ const AddPet = () => {
           />
           <input
             type="text"
-            name="species"
-            placeholder="Species"
-            value={formData.species}
+            name="category"
+            placeholder="Category"
+            value={formData.category}
             onChange={handleChange}
             required
             className="border border-gray-300 px-4 py-2 rounded-lg w-full text-base focus:outline-none focus:ring-2 focus:ring-gray-500"
