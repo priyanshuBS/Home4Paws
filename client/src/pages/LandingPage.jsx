@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 const LandingPage = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
-  // console.log(pets);
 
   // Simulate API call
   useEffect(() => {

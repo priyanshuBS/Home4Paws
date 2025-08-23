@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }) => {
     setAuthLoading(true);
     try {
       const res = await api.post("/users/logout");
-      console.log(res);
       setUser(null);
       return res.status;
     } catch (err) {

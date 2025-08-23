@@ -101,15 +101,22 @@ const AddPet = () => {
             required
             className="border border-gray-300 px-4 py-2 rounded-lg w-full text-base focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
-          <input
-            type="text"
+          <select
             name="category"
-            placeholder="Category"
             value={formData.category}
             onChange={handleChange}
             required
             className="border border-gray-300 px-4 py-2 rounded-lg w-full text-base focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
+          >
+            <option value="" disabled>
+              Select Category
+            </option>
+            <option value="dogs">Dogs</option>
+            <option value="cats">Cats</option>
+            <option value="birds">Birds</option>
+            <option value="rabbits">Rabbits</option>
+            <option value="others">Others</option>
+          </select>
           <input
             type="text"
             name="breed"

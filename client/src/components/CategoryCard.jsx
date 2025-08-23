@@ -5,7 +5,6 @@ const CategoryCard = ({ name, image }) => {
 
   const handleClick = () => {
     const categorySlug = name.toLowerCase();
-    console.log(categorySlug);
     navigate(`/category/${categorySlug}`);
   };
   return (
