@@ -27,7 +27,7 @@ const LandingPage = () => {
     <div className="bg-gray-100 px-2 md:px-8">
       {/* hero section */}
       <section className="md:overflow-hidden md:flex md:justify-between items-center md:relative">
-        <div className="container md:w-6/12 flex flex-col items-center justify-center relative top-8 md:top-14 z-10 text-center">
+        <div className="container py-12 md:py-0 w-full md:w-6/12 flex flex-col items-center justify-center relative top-8 md:top-14 z-10 text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 mb-8 md:mb-12 leading-tight drop-shadow-sm md:absolute md:-top-44">
             Adopt Your <span className="text-pink-600">Furry Friend</span>
           </h1>
@@ -42,14 +42,17 @@ const LandingPage = () => {
             Get Started
           </Link>
         </div>
+
+        {/* Desktop-only image */}
         <div className="hidden md:block md:w-6/12">
           <img
             src="/og.png"
-            alt=""
+            alt="Adopt Pet"
             className="aspect-square object-cover bg-transparent rounded-2xl"
           />
         </div>
       </section>
+
       {/* Featured Pets section */}
       <section className="py-20">
         <div className="container mx-auto px-6">
