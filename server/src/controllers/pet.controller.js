@@ -13,7 +13,6 @@ export const addPet = asyncHandler(async (req, res) => {
   }
 
   const petData = parsedData?.data;
-  console.log(petData);
 
   const ownerId = req?.user?._id;
   petData.owner = ownerId;
@@ -130,7 +129,7 @@ export const petInfoById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, pet, "Fetch pet data successfully!"));
 });
 
-const mainCategories = ["dog", "cat", "bird", "rabbit"];
+const mainCategories = ["dogs", "cat", "bird", "rabbit"];
 
 export const getPetsByCategory = asyncHandler(async (req, res) => {
   const category = req.query.category?.toLowerCase();
