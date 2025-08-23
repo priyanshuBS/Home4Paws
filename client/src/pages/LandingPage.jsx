@@ -24,14 +24,14 @@ const LandingPage = () => {
     fetchPetData();
   }, []);
   return (
-    <div className="bg-gray-100 px-2 md:px-6">
+    <div className="bg-gray-100 px-2 md:px-8">
       {/* hero section */}
-      <section className=" py-24 overflow-hidden">
-        <div className="container mx-auto px-6 flex flex-col items-center relative z-10 text-center">
-          <h1 className="text-5xl font-extrabold text-gray-800 mb-6 leading-tight drop-shadow-sm">
+      <section className="md:overflow-hidden md:flex md:justify-between items-center md:relative">
+        <div className="container md:w-6/12 flex flex-col items-center justify-center relative top-8 md:top-14 z-10 text-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 mb-8 md:mb-12 leading-tight drop-shadow-sm md:absolute md:-top-44">
             Adopt Your <span className="text-pink-600">Furry Friend</span>
           </h1>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl">
+          <p className="text-sm md:text-lg text-gray-600 mb-6 md:mb-12 max-w-2xl">
             Open your heart and home to a pet waiting to shower you with
             unconditional love. Every adoption changes a life — including yours.
           </p>
@@ -41,6 +41,13 @@ const LandingPage = () => {
           >
             Get Started
           </Link>
+        </div>
+        <div className="hidden md:block md:w-6/12">
+          <img
+            src="/og.png"
+            alt=""
+            className="aspect-square object-cover bg-transparent rounded-2xl"
+          />
         </div>
       </section>
       {/* Featured Pets section */}
