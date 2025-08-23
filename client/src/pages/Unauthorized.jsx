@@ -4,7 +4,7 @@ const Unauthorized = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-white px-6">
+    <div className="py-32 flex items-center justify-center bg-gradient-to-br from-slate-100 to-white px-6">
       <div className="text-center max-w-xl space-y-6">
         <h1 className="text-[120px] leading-none font-bold text-slate-800 tracking-tight">
           403
